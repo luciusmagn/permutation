@@ -16,7 +16,7 @@ fn main() {
 			.map(|(pos, x)| Program { name: x, pos: pos })
 			.collect()
 	} else {
-		println!("retard");
+		println!("insufficient arguments");
 		exit(-1)
 	};
 
@@ -25,10 +25,10 @@ fn main() {
 			.split(',')
 			.for_each(
 				|x| match x.chars().next() {
-					Some('s') => (0..x.chars().skip(1).collect::<String>().parse::<usize>().expect("nuh?")).for_each(|_| {let tmp = programs.pop().expect("??"); programs.insert(0, tmp)}),
+					Some('s') => (0..x.chars().skip(1).collect::<String>().parse::<usize>().expect("not a number")).for_each(|_| {let tmp = programs.pop().expect("programs empty"); programs.insert(0, tmp)}),
 					Some('x') => programs.swap(
-							x.chars().skip(1).collect::<String>().split('/').next().expect("wrong???").parse::<usize>().expect("uuh?"),
-							x.chars().skip(1).collect::<String>().split('/').skip(1).next().expect("wrung???").parse::<usize>().expect("huh?"),
+							x.chars().skip(1).collect::<String>().split('/').next().expect("wrong format").parse::<usize>().expect("not a number"),
+							x.chars().skip(1).collect::<String>().split('/').skip(1).next().expect("needs 2 arguments").parse::<usize>().expect("not a number"),
 					),
 					Some('p') => {
 						let (i1, i2) = (
@@ -42,9 +42,9 @@ fn main() {
 										.collect::<String>()
 										.split('/')
 										.next()
-										.expect("wrong???")
+										.expect("wrong format")
 										.parse::<usize>()
-										.expect("uuh?"))
+										.expect("not a number"))
 								.map(|(i, _)| i).expect("no such lelement"),
 							programs
 								.iter()
@@ -57,18 +57,18 @@ fn main() {
 										.split('/')
 										.skip(1)
 										.next()
-										.expect("wrung???")
+										.expect("needs 2 arguments")
 										.parse::<usize>()
-										.expect("huh?"))
+										.expect("not a number"))
 								.map(|(i, _)| i).expect("no such lelement")
 						);
 						programs.swap(i1, i2)
 					}
-					_ => { println!("double fuj"); exit(-2) }
+					_ => { println!("unknown instruction"); exit(-2) }
 				}
 			)
 	} else {
-		println!("fuj");
+		println!("missing instructions");
 		exit(-1)
 	}
 
